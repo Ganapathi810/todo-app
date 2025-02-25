@@ -1,5 +1,5 @@
 import { Todo } from './Todo';
-import { closestCenter, DndContext, DragOverlay, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { closestCenter, DndContext, DragOverlay, PointerSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useState } from 'react';
 import api from '../../config/api';
@@ -8,7 +8,20 @@ import { TodoSkeletionLoader } from './TodosSkeletonLoader';
 export const Todos = ({ loading,todos,setTodos,editButtonHandler,setSelectedTodoForEditing,searchFilter,statusFilter })  => {
     const [activeTodo,setActiveTodo] = useState(null);
 
-    const sensors = useSensors(useSensor(TouchSensor));
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                delay: 200,
+                distance: 5,
+            },
+        }),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                delay: 300, 
+                distance: 5,
+            },
+        })
+    );
 
     const handleDragEnd = async (event) => {
         const { active,over } = event;
