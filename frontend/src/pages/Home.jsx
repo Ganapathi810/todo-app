@@ -13,8 +13,10 @@ export const Home = () => {
     const [searchFilter,setSearchFilter] = useState('');
     const [statusFilter,setStatusFilter] = useState('')
     const [filteredTodos,setFilteredTodos] = useState(todos)
+    const [loading,setLoading] = useState(false);
 
     useEffect(()=>{
+        setLoading(true)
         api.get('/api/todos')
         .then((response)=>{
             setTodos(response.data)
@@ -22,6 +24,10 @@ export const Home = () => {
         .catch(error => {
             console.log("Failed to fetch todos : ",error.response?.data?.message || error.message)
         })
+        .finally(() => {
+          setLoading(false);
+      });
+
     },[])
 
     useEffect(() => {
@@ -120,7 +126,8 @@ export const Home = () => {
                 <span className='md:text-base inline-block w-30'>Add Todo</span>
               </button>
             </div>  
-            <Todos 
+            <Todos
+              loading={loading} 
               todos={(searchFilter === '' && statusFilter === '') ? todos : filteredTodos} 
               setTodos={setTodos} 
               editButtonHandler={openEditTodoBoxHandler} 
