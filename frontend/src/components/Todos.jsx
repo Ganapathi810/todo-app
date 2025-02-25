@@ -1,5 +1,5 @@
 import { Todo } from './Todo';
-import { closestCenter, DndContext, DragOverlay } from '@dnd-kit/core'
+import { closestCenter, DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useState } from 'react';
 import api from '../../config/api';
@@ -7,6 +7,8 @@ import { TodoSkeletionLoader } from './TodosSkeletonLoader';
 
 export const Todos = ({ loading,todos,setTodos,editButtonHandler,setSelectedTodoForEditing,searchFilter,statusFilter })  => {
     const [activeTodo,setActiveTodo] = useState(null);
+
+    const sensors = useSensors(useSensor(PointerSensor));
 
     const handleDragEnd = async (event) => {
         const { active,over } = event;
@@ -27,7 +29,7 @@ export const Todos = ({ loading,todos,setTodos,editButtonHandler,setSelectedTodo
                 })
             }
         }
-        setActiveTodo(false)
+        setActiveTodo(null)
     }
 
     const handleDragStart = (e) => {
@@ -44,7 +46,7 @@ export const Todos = ({ loading,todos,setTodos,editButtonHandler,setSelectedTodo
                         { (searchFilter.length > 0 || statusFilter.length > 0) ? 'No todo match your filter' : "No todos, add them"}
                     </span>
                 ) : (
-                    <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
+                    <DndContext sensors={sensors} onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
                         <SortableContext  items={todos} collisionDetection={closestCenter} strategy={verticalListSortingStrategy}>
                                 {todos.map((todo) => (
                                     <Todo 
