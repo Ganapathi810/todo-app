@@ -36,7 +36,7 @@ A dynamic and responsive **Todo App** built with **React** (frontend) and **Node
 1. **Clone the Repository**
 
    ```sh
-   git clone https://github.com/your-username/todo-app.git
+   git clone https://github.com/Ganapathi810/todo-app.git
    cd todo-app
    ```
 
