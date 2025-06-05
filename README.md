@@ -1,4 +1,7 @@
-# ![Logo](./frontend/public/favicon.ico) Todo App
+<h1>
+  <img src="./frontend/public/favicon.ico" alt="Tech Vibe Logo" width="32" style="margin-right: 10px;">
+  Todo App
+</h1>
 
 
 
